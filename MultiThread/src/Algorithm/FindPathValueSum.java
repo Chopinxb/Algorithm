@@ -22,7 +22,7 @@ public class FindPathValueSum {
         if(root == null)
             return;
         int temp = sum[0] + root.val;
-        if(temp == target) {
+        if(temp == target && root.left==null && root.right==null) {
             ArrayList<Integer> result = (ArrayList<Integer>) temResult.clone();
             result.add(root.val);
             resultList.add(result);
