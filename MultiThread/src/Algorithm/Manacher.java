@@ -3,13 +3,14 @@ package Algorithm;
 import java.util.Arrays;
 
 /**
- * Created by DELL on 2016/9/23.
+ * Created by Chopin on 2016/9/23.
+ * /最长回文子串的Manacher算法;
  */
 public class Manacher {
     public static void main(String args[]){
-        System.out.println(Arrays.toString(new Manacher().manacher("abccd")));
+        System.out.println(new Manacher().manacher("ynyggbgilli"));
     }
-    public int[] manacher(String s){
+    public String manacher(String s){
         int[] pArr = new int[s.length()*2+1];
         int pR = 0;
         int index = 0;
@@ -27,7 +28,7 @@ public class Manacher {
                 int r = pArr[2*index -i];
                 //i关于index对称位置的回文串在index为中心回文串里面
                 if(2*index-i-r < index - pArr[index]){
-                    pArr[i] = r;
+                    pArr[i] = pR-i;
                 }
                 //i关于index对称位置的回文串超出index为中心回文串
                 else if(2*index-i-r > index - pArr[index]){
@@ -38,10 +39,10 @@ public class Manacher {
                     int j=pR-i;
                     while(  i-j>=0 && i+j < pArr.length && str.charAt(i-j)==str.charAt(i+j)){
                         j++;
+                        pR = i+j;
+                        index = i;
                     }
-                    pR = i+j;
                     pArr[i] = j;
-                    index = i;
                 }
             }
             //暴力扩展
@@ -49,18 +50,29 @@ public class Manacher {
                 int j=1;
                 while(  i-j>=0 && i+j < pArr.length && str.charAt(i-j)==str.charAt(i+j)){
                     j++;
+                    pR = i+j;
+                    index = i;
                 }
-                pR = i+j;
                 pArr[i] = j;
-                index = i;
             }
         }
-//        int maxR = pArr[0];
-//        for (int i = 0 ; i < pArr.length ; i++ ) {
-//            if(pArr[i]>maxR)
-//                maxR = pArr[i];
-//        }
-        return pArr;
+        int maxR = pArr[0];
+        int maxIndex = 0;
+        for (int i = 0 ; i < pArr.length ; i++ ) {
+            if(pArr[i]>maxR) {
+                maxR = pArr[i];
+                maxIndex = i;
+            }
+        }
 
+        int start = maxIndex - maxR + 1;
+        int end = maxIndex + maxR - 1;
+        String resultStr = "";
+        for(int i = start ; i <= end ; i++){
+            if(str.charAt(i) != '#'){
+                resultStr += str.charAt(i);
+            }
+        }
+        return resultStr;
     }
 }
